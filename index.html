@@ -1,0 +1,139 @@
+<!doctype html>
+<head lang="pt-BR">
+  <title>Conversor de Temperaturas</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" type="image/png" href="./images/icons/favicon.ico" />
+  
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="estilos/estilos.css" />
+  
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  
+</head>
+<body onload="reloadTable();">
+  <div class="content">
+    <div style="margin: 5px" class='card'>
+      <h4 style="margin: 5px">Conversor de Temperatura</h2>
+		  <div class="row" style="margin: 5px">
+			<div class="col-12">	
+				<p>Digite um valor em algum dos campos para realizar a conversão:</p>
+				</div>
+		  </div>
+		  
+		  <div class="row" style="margin: 5px">
+			<div class="col-4">
+				<label>Fahrenheit:</label>
+			</div>
+			
+			<div class="col-8">
+				<form autocomplete="on">
+					<input id="inputFahrenheit" name="inputFahrenheit" class="form-control" type="number" min="-459.66999999999996" placeholder="Fahrenheit" oninput="temperatureConverter(this.id,this.value)" onchange="temperatureConverter(this.id,this.value)">
+				</form>
+			</div>
+		  </div>
+		  
+		  <div class="row" style="margin: 5px">
+			<div class="col-4">
+				<label>Celsius:</label>
+			</div>
+			
+			<div class="col-8">
+				<input id="inputCelsius" name="inputCelsius" class="form-control" type="number" min="-273.15" placeholder="Celsius" oninput="temperatureConverter(this.id,this.value)" onchange="temperatureConverter(this.id,this.value)">
+			</div>
+		  </div>
+		  
+		  <div class="row" style="margin: 5px">
+			<div class="col-4">
+				<label>Kelvin:</label>
+			</div>
+
+			<div class="col-8">	
+				<input id="inputKelvin" name="inputKelvin" class="form-control" type="number" min="0" placeholder="Kelvin" oninput="temperatureConverter(this.id,this.value)" onchange="temperatureConverter(this.id,this.value)">
+			</div>
+		  </div>
+    
+		<a class="btn btn-primary" onclick="salvar()" href="formulas.html" style="margin: 5px" role="button">Mostar Fórmulas</a>	
+		  
+		  <h4 style="margin: 5px">Última pesquisa:</h4>
+
+		<table style="margin: 0px" class="table table-bordered">
+				<thead class="thead-dark">
+					<tr>
+					  <th>VALOR</th>
+					  <th>RESULTADO</th>
+					</tr>
+				  </thead>
+				  <tbody>
+				  
+				  <tr>
+					<td> Fº </td>
+					<td id="tdF"> </td>
+				  </tr>
+				  
+				  <tr>
+					<td> Cº </td>
+					<td id="tdC">  </td>
+				  </tr>
+				  <tr>
+					<td> K </td>
+					<td id="tdK">  </td>
+				  </tr>
+				  </tbody>
+			  </table>  
+
+	</div>
+  </div>
+
+	<script>
+	function temperatureConverter(source,valNum) {
+	
+	  valNum = parseFloat(valNum);
+	  
+	  var inputFahrenheit = document.getElementById("inputFahrenheit");
+	  var inputCelsius = document.getElementById("inputCelsius");
+	  var inputKelvin = document.getElementById("inputKelvin");
+
+	  if (source=="inputFahrenheit") {
+		inputCelsius.value=((valNum-32)/1.8).toFixed(2);
+		inputKelvin.value=(((valNum-32)/1.8)+273.15).toFixed(2);
+	  }
+	  if (source=="inputCelsius") {
+		inputFahrenheit.value=((valNum*1.8)+32).toFixed(2);
+		inputKelvin.value=((valNum)+273.15).toFixed(2);
+	  }
+	  if (source=="inputKelvin") {
+		inputFahrenheit.value=(((valNum-273.15)*1.8)+32).toFixed(2);
+		inputCelsius.value=((valNum)-273.15).toFixed(2);
+	  }
+
+	  localStorage.setItem('inputFahrenheit', inputFahrenheit.value);
+	  localStorage.setItem('inputCelsius', inputCelsius.value);
+	  localStorage.setItem('inputKelvin', inputKelvin.value);
+
+	  console.log(localStorage.getItem('inputFahrenheit'));
+	  console.log(localStorage.getItem('inputCelsius'));
+	  console.log(localStorage.getItem('inputKelvin'));
+
+	  reloadTable();
+	}
+
+	function reloadTable(){
+		document.getElementById('tdF').innerHTML = localStorage.getItem('inputFahrenheit');
+		document.getElementById('tdC').innerHTML = localStorage.getItem('inputCelsius');
+		document.getElementById('tdK').innerHTML = localStorage.getItem('inputKelvin');
+	}
+	</script>
+
+	<script>
+	if('serviceWorker' in navigator) {
+	  navigator.serviceWorker
+			   .register('sw.js')
+			   .then(function() { console.log("Service Worker Registered"); });
+	}
+	</script>
+
+</body>
